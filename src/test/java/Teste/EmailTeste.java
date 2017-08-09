@@ -18,7 +18,7 @@ import org.junit.Test;
 public class EmailTeste {
 
     @Test
-    //@Ignore
+    @Ignore
     public void enviarEmail() {
 //        PedidoTeste pedidoTeste = new PedidoTeste();
 //        String caminho = pedidoTeste.gerarXml();
