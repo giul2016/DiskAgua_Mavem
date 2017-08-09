@@ -93,7 +93,7 @@ public class Pedido implements Serializable {
             printWriter.flush();
             printWriter.close();
             Messages.addGlobalInfo("Gerado Xml com sucesso!");
-            Messages.addGlobalInfo("Destino: "+caminho);
+            Messages.addGlobalInfo("Destino: " + caminho);
             return caminho;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -105,33 +105,37 @@ public class Pedido implements Serializable {
         String caminho = gerarArquivo_XML(pedido);
         enviarEmail(caminho, pedido);
     }
-    
-    public void enviarEmail(String arquivo, Pedido pedido){
+
+    public void enviarEmail(String arquivo, Pedido pedido) {
         try {
             Mensagem mensagem = new Mensagem();
             mensagem.setDestino(pedido.cliente.getEmail());
-            String dataConvertida_BR = converteData(pedido.data);
-            mensagem.setTitulo("Arquivo xml do pedido codigo: "+pedido.codigo+", de "+dataConvertida_BR);
+            String dataConvertida_BR = converteDataFormato_BR(pedido.data.toString());
+            mensagem.setTitulo("Arquivo xml do pedido codigo: " + pedido.codigo + ", de " + dataConvertida_BR);
             mensagem.setMensagem("Segue arquivo xml");
-            
-            EmailUtils.conectaEmail();            
+
+            EmailUtils.conectaEmail();
             EmailUtils.enviaEmail(mensagem, arquivo);
-           
+            
+            Messages.addGlobalInfo("Email enviado com sucesso para: "+pedido.getCliente().getEmail());
+
         } catch (Exception e) {
             Messages.addGlobalError("Email não foi enviado: Pode ser Problema Firewall or Antivirus!");
             e.printStackTrace();
         }
     }
-    
-    public String converteData(Date dtData){
-       SimpleDateFormat formatBra;   
-       formatBra = new SimpleDateFormat("dd/MM/yyyy");
-       try {
-          java.util.Date newData = formatBra.parse(dtData.toString());
-          return (formatBra.format(newData));
-       } catch (ParseException Ex) {
-          return "Erro na conversão da data";
-       }
+
+    public String converteDataFormato_BR(String dataConverter) {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Date data = formato.parse(dataConverter);
+            formato.applyPattern("dd/MM/yyyy");
+            String dataFormatada = formato.format(data);
+            return dataFormatada;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Data inválida!";
     }
 
     public Long getCodigo() {

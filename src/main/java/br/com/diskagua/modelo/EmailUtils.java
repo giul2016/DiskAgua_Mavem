@@ -47,7 +47,7 @@ public class EmailUtils {
         email.addTo(mensagem.getDestino());
         email.setDebug(true);
         String resposta = email.send();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "E-mail enviado com sucesso para: " + mensagem.getDestino(), "Informação"));
+        //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "E-mail enviado com sucesso para: " + mensagem.getDestino(), "Informação"));
     }
 
     public static EmailAttachment anexo(String caminho) {

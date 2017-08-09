@@ -18,6 +18,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,7 +40,32 @@ public class PedidoTeste {
     ProdutoDao produtoDao = new ProdutoDao();
     ClienteDao clienteDao = new ClienteDao();
     FuncionarioDao funcionarioDao = new FuncionarioDao();
+    private Date dtData;
 
+    @Test
+    //@Ignore
+    public void converterData() throws ParseException {
+        Pedido pedido = pedidoDao.buscarPedido(20L);
+    
+        String dataEmUmFormato = pedido.getData().toString();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd"); 
+        Date data = formato.parse(dataEmUmFormato); 
+        formato.applyPattern("dd/MM/yyyy"); 
+        String dataFormatada = formato.format(data);
+        
+        
+//       SimpleDateFormat formatBra;   
+//       formatBra = new SimpleDateFormat("dd/MM/yyyy");
+//       try {
+//          java.util.Date newData = formatBra.parse(dtData.toString());
+//            String format = formatBra.format(newData);
+//       } catch (ParseException Ex) {
+//              Ex.getMessage();
+//       }
+       
+       System.out.println("Data formatada: "+dataFormatada);
+    }
+    
     @Test
     @Ignore
     public void cadastrar() {
@@ -129,7 +156,7 @@ public class PedidoTeste {
 
     @Test
     @Ignore
-    public String gerarXml() {
+    public void gerarXml() {
         Pedido pedido = pedidoDao.buscarPedido(20L);
         
         String xml = "";
@@ -152,11 +179,11 @@ public class PedidoTeste {
             printWriter.close(); 
             //System.out.println("caminho->>> "+caminho);
             //Email.sendEmail(caminho, pedido.getCliente().getEmail());
-            return caminho;
+            //return caminho;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return "";
+        //return "";
     }
 
 }
